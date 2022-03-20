@@ -7,9 +7,14 @@ const { errorHandler } = require('../helpers/dbErrorHandler');
 const _ = require('lodash');
 const nodemailer = require('nodemailer');
 const { OAuth2Client } = require('google-auth-library');
+const mailjet = require ('node-mailjet')
+    .connect("213f8ed141e9c448227c041078e1298f", "7343f08fe5e4af2ca85421a20ba95ae5")
+
 // sendgrid
 const sgMail = require('@sendgrid/mail'); // SENDGRID_API_KEY
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+
 
 
 
@@ -96,19 +101,52 @@ exports.preSignupAdmin = (req, res) => {
         //     });
         // });
 
-        transporter.sendMail(emailData, (error, info) => {
-            if (error) {
-               return console.log(error.message);
-            }
-            else
-            {
-                return res.json({
-                    message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
-                });
+        // transporter.sendMail(emailData, (error, info) => {
+        //     if (error) {
+        //        return console.log(error.message);
+        //     }
+        //     else
+        //     {
+        //         return res.json({
+        //             message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
+        //         });
 
-            }
-            console.log('Message sent: %s', info.messageId);
-         });
+        //     }
+        //     console.log('Message sent: %s', info.messageId);
+        //  });
+
+
+     mailjet
+         .post("send", {'version': 'v3.1'})
+         .request({
+             "Messages":[{
+                 "From": {
+                     "Email": process.env.EMAIL_FROM,
+                     "Name": "Rajesh"
+                 },
+                 "To": [{
+                     "Email": email,
+                     "Name": "email"
+                 }],
+                 "Subject": "account activation link",
+                 "TextPart": "please click here to activate your account",
+                 "HTMLPart": ` <p>Please use the following link to activate your acccount:</p>
+                 <p>${process.env.CLIENT_URL}/auth/adminaccount/activate/${token}</p>
+                 <hr />
+                 <p>This email may contain sensetive information</p>
+                 <p>https://nextblog.netlify.app</p>`
+             }]
+         })
+     request
+         .then((result) => {
+            return res.json({
+                message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
+            });
+         })
+         .catch((err) => {
+             console.log(err.statusCode)
+         })
+
     });
 };
 
@@ -334,25 +372,52 @@ exports.forgotPassword = (req, res) => {
             if (err) {
                 return res.json({ error: errorHandler(err) });
             } else {
-                // sgMail.send(emailData).then(sent => {
-                //     return res.json({
-                //         message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
-                //     });
-                // });
 
-                transporter.sendMail(emailData, (error, info) => {
-                    if (error) {
-                       return console.log(error.message);
-                    }
-                    else
-                    {
-                        return res.json({
-                            message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
-                        });
 
-                    }
-                    console.log('Message sent: %s', info.messageId);
-                 });
+                // transporter.sendMail(emailData, (error, info) => {
+                //     if (error) {
+                //        return console.log(error.message);
+                //     }
+                //     else
+                //     {
+                //         return res.json({
+                //             message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
+                //         });
+
+                //     }
+                //     console.log('Message sent: %s', info.messageId);
+                //  });
+
+                mailjet
+                .post("send", {'version': 'v3.1'})
+                .request({
+                    "Messages":[{
+                        "From": {
+                            "Email": process.env.EMAIL_FROM,
+                            "Name": "Rajesh"
+                        },
+                        "To": [{
+                            "Email": email,
+                            "Name": "email"
+                        }],
+                        "Subject": "account activation link",
+                        "TextPart": "please click here to activate your account",
+                        "HTMLPart": ` <p>Please use the following link to activate your acccount:</p>
+                        <p>${process.env.CLIENT_URL}/auth/adminaccount/activate/${token}</p>
+                        <hr />
+                        <p>This email may contain sensetive information</p>
+                        <p>https://nextblogg.vercel.app</p>`
+                    }]
+                })
+            request
+                .then((result) => {
+                    return res.json({
+                                    message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
+                                });
+                })
+                .catch((err) => {
+                    console.log(err.statusCode)
+                })
 
             }
         });
