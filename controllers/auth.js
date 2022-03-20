@@ -12,10 +12,7 @@ const mailjet = require ('node-mailjet')
 
 // sendgrid
 const sgMail = require('@sendgrid/mail'); // SENDGRID_API_KEY
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
-
-
+sgMail.setApiKey("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");
 
 
 let transporter = nodemailer.createTransport({
@@ -50,25 +47,13 @@ exports.preSignup = (req, res) => {
         `
         };
 
-        // sgMail.send(emailData).then(sent => {
-        //     return res.json({
-        //         message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
-        //     });
-        // });
+        sgMail.send(emailData).then(sent => {
+            return res.json({
+                message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
+            });
+        });
 
-        transporter.sendMail(emailData, (error, info) => {
-            if (error) {
-               return console.log(error.message);
-            }
-            else
-            {
-                return res.json({
-                    message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
-                });
 
-            }
-            console.log('Message sent: %s', info.messageId);
-         });
     });
 };
 exports.preSignupAdmin = (req, res) => {
@@ -95,57 +80,14 @@ exports.preSignupAdmin = (req, res) => {
         `
         };
 
-        // sgMail.send(emailData).then(sent => {
-        //     return res.json({
-        //         message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
-        //     });
-        // });
-
-        // transporter.sendMail(emailData, (error, info) => {
-        //     if (error) {
-        //        return console.log(error.message);
-        //     }
-        //     else
-        //     {
-        //         return res.json({
-        //             message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
-        //         });
-
-        //     }
-        //     console.log('Message sent: %s', info.messageId);
-        //  });
-
-
-     mailjet
-         .post("send", {'version': 'v3.1'})
-         .request({
-             "Messages":[{
-                 "From": {
-                     "Email": process.env.EMAIL_FROM,
-                     "Name": "Rajesh"
-                 },
-                 "To": [{
-                     "Email": email,
-                     "Name": "email"
-                 }],
-                 "Subject": "account activation link",
-                 "TextPart": "please click here to activate your account",
-                 "HTMLPart": ` <p>Please use the following link to activate your acccount:</p>
-                 <p>${process.env.CLIENT_URL}/auth/adminaccount/activate/${token}</p>
-                 <hr />
-                 <p>This email may contain sensetive information</p>
-                 <p>https://nextblog.netlify.app</p>`
-             }]
-         })
-     request
-         .then((result) => {
+        sgMail.send(emailData).then(sent => {
             return res.json({
-                message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
+                message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
             });
-         })
-         .catch((err) => {
-             console.log(err.statusCode)
-         })
+        });
+
+    
+
 
     });
 };
@@ -374,50 +316,15 @@ exports.forgotPassword = (req, res) => {
             } else {
 
 
-                // transporter.sendMail(emailData, (error, info) => {
-                //     if (error) {
-                //        return console.log(error.message);
-                //     }
-                //     else
-                //     {
-                //         return res.json({
-                //             message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
-                //         });
 
-                //     }
-                //     console.log('Message sent: %s', info.messageId);
-                //  });
 
-                mailjet
-                .post("send", {'version': 'v3.1'})
-                .request({
-                    "Messages":[{
-                        "From": {
-                            "Email": process.env.EMAIL_FROM,
-                            "Name": "Rajesh"
-                        },
-                        "To": [{
-                            "Email": email,
-                            "Name": "email"
-                        }],
-                        "Subject": "account activation link",
-                        "TextPart": "please click here to activate your account",
-                        "HTMLPart": ` <p>Please use the following link to activate your acccount:</p>
-                        <p>${process.env.CLIENT_URL}/auth/adminaccount/activate/${token}</p>
-                        <hr />
-                        <p>This email may contain sensetive information</p>
-                        <p>https://nextblogg.vercel.app</p>`
-                    }]
-                })
-            request
-                .then((result) => {
+                sgMail.send(emailData).then(sent => {
                     return res.json({
-                                    message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
-                                });
-                })
-                .catch((err) => {
-                    console.log(err.statusCode)
-                })
+                        message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
+                    });
+                });
+
+            
 
             }
         });
