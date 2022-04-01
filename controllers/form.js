@@ -4,13 +4,13 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const nodemailer = require('nodemailer');
 
 let transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp-mail.outlook.com",
     //port:'465',
    
     secure: false, // true for 465, false for other ports
     auth: {
-      user: "foodhubdeliveries@gmail.com", 
-      pass: "raji8897"
+        user: process.env.HOTMAIL_USER, 
+        pass: process.env.HOTMAIL_PASS
     }, 
     tls: {
         rejectUnauthorized: false

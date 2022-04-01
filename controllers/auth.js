@@ -10,6 +10,7 @@ const { OAuth2Client } = require('google-auth-library');
 
 const mailjet = require ('node-mailjet')
     .connect(process.env.MJ_APIKEY_PUBLIC, process.env.MJ_APIKEY_PRIVATE)
+    
 
 
 // sendgrid
@@ -22,13 +23,13 @@ const mailjet = require ('node-mailjet')
 
 
 let transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: "smtp-mail.outlook.com",
     //port:'465',
    
     secure: false, // true for 465, false for other ports
     auth: {
-      user: "foodhubdeliveries@gmail.com", 
-      pass: "raji8897"
+      user: process.env.HOTMAIL_USER, 
+      pass: process.env.HOTMAIL_PASS
     }, 
     tls: {
         rejectUnauthorized: false
