@@ -1,15 +1,20 @@
 {
-  "name": "backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
   "scripts": {
-    "start": "nodemon server.js"
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "engines": {
+    "node": "16"
+  },
+  "main": "index.js",
   "dependencies": {
+    "firebase-admin": "^10.0.2",
+    "firebase-functions": "^3.18.0",
     "@sendgrid/mail": "^6.4.0",
     "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
@@ -18,8 +23,6 @@
     "express": "^4.17.1",
     "express-jwt": "^5.3.1",
     "express-validator": "^6.1.1",
-    "firebase-admin": "^10.0.2",
-    "firebase-functions": "^3.19.0",
     "formidable": "^1.2.1",
     "google-auth-library": "^5.2.1",
     "jsonwebtoken": "^8.5.1",
@@ -29,9 +32,13 @@
     "node-mailjet": "^3.3.7",
     "nodemailer": "^6.7.2",
     "nodemon": "^1.19.1",
-    "protonmail-api": "^2.2.0",
     "shortid": "^2.2.14",
     "slugify": "^1.3.4",
     "string-strip-html": "^4.1.1"
-  }
+
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
 }

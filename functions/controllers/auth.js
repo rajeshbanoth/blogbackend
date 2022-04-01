@@ -22,18 +22,12 @@ const mailjet = require ('node-mailjet')
 
 
 let transporter = nodemailer.createTransport({
-    service: "gmail",
-    //port:'465',
-   
-    secure: false, // true for 465, false for other ports
+    service: 'gmail',
     auth: {
-      user: "foodhubdeliveries@gmail.com", 
-      pass: "raji8897"
-    }, 
-    tls: {
-        rejectUnauthorized: false
-    }
-  });
+        user: 'banothrajesh97@gmail.com',
+        pass: 'Raji@8897'
+      }
+ });
 
 exports.preSignup = (req, res) => {
     const { name, email, password } = req.body;
@@ -55,15 +49,9 @@ exports.preSignup = (req, res) => {
             <p>${process.env.CLIENT_URL}/auth/account/activate/${token}</p>
             <hr />
             <p>This email may contain sensetive information</p>
-            <p>https://nextblogg.vercel.app</p>
+            <p>https://seoblog.com</p>
         `
         };
-
-        transporter.sendMail(emailData).then(sent=>{
-            return res.json({
-                                message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
-                            });
-        });
 
         // sgMail.send(emailData).then(sent => {
         //     return res.json({
@@ -72,44 +60,44 @@ exports.preSignup = (req, res) => {
         // });
 
 
-        // mailjet
-        // .post("send", {'version': 'v3.1'})
-        // .request({
-        //   "Messages":[
-        //     {
-        //       "From": {
-        //         "Email": process.env.EMAIL_FROM,
-        //         "Name": "RBcompanies"
-        //       },
-        //       "To": [
-        //         {
-        //           "Email": email,
-        //           "Name": email
-        //         }
-        //       ],
-        //       "Subject": "Account activation link",
-        //       "TextPart": "Please Click below link to get your account activated",
-        //       "HTMLPart":  `
-        //       <p>Please use the following link to activate your acccount:</p>
-        //       <p>${process.env.CLIENT_URL}/auth/account/activate/${token}</p>
-        //       <hr />
-        //       <p>This email may contain sensetive information</p>
-        //       <p>https://nextblogg.vercel.app</p>
-        //   `,
+        mailjet
+        .post("send", {'version': 'v3.1'})
+        .request({
+          "Messages":[
+            {
+              "From": {
+                "Email": process.env.EMAIL_FROM,
+                "Name": "RBcompanies"
+              },
+              "To": [
+                {
+                  "Email": email,
+                  "Name": email
+                }
+              ],
+              "Subject": "Account activation link",
+              "TextPart": "Please Click below link to get your account activated",
+              "HTMLPart":  `
+              <p>Please use the following link to activate your acccount:</p>
+              <p>${process.env.CLIENT_URL}/auth/account/activate/${token}</p>
+              <hr />
+              <p>This email may contain sensetive information</p>
+              <p>https://nextblogg.vercel.app</p>
+          `,
           
-        //     }
-        //   ]
-        // })
-        //   .then((result) => {
+            }
+          ]
+        })
+          .then((result) => {
 
-        //     console.log(result)
-        //                return res.json({
-        //                 message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
-        //             });
-        //   })
-        //   .catch((err) => {
-        //     console.log(err.statusCode)
-        //   })
+            console.log(result)
+                       return res.json({
+                        message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
+                    });
+          })
+          .catch((err) => {
+            console.log(err.statusCode)
+          })
 
 
     });
@@ -126,7 +114,7 @@ exports.preSignupAdmin = (req, res) => {
    console.log(token)
 
         const emailData = {
-            from:'Gloom',
+            from: process.env.EMAIL_FROM,
             to: email,
             subject: `Account activation link`,
             html: `
@@ -134,16 +122,9 @@ exports.preSignupAdmin = (req, res) => {
             <p>${process.env.CLIENT_URL}/auth/adminaccount/activate/${token}</p>
             <hr />
             <p>This email may contain sensetive information</p>
-            <p>https://nextblogg.vercel.app</p>
+            <p>https://seoblog.com</p>
         `
         };
-
-        transporter.sendMail(emailData).then(sent=>{
-            return res.json({
-                                message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
-                            });
-        });
-;
 
         // sgMail.send(emailData).then(sent => {
         //     return res.json({
@@ -153,43 +134,43 @@ exports.preSignupAdmin = (req, res) => {
 
 
 
-//     mailjet
-// .post("send", {'version': 'v3.1'})
-// .request({
-//   "Messages":[
-//     {
-//       "From": {
-//         "Email": process.env.EMAIL_FROM,
-//         "Name": "RBcompanies"
-//       },
-//       "To": [
-//         {
-//           "Email": email,
-//           "Name": email
-//         }
-//       ],
-//       "Subject": "Account activation link",
-//       "TextPart": "Please Click below link to get your account activated",
-//       "HTMLPart":  `
-//       <p>Please use the following link to activate your acccount:</p>
-//       <p>${process.env.CLIENT_URL}/auth/adminaccount/activate/${token}</p>
-//       <hr />
-//       <p>This email may contain sensetive information</p>
-//       <p>https://nextblogg.vercel.app</p>
-//   `,
+    mailjet
+.post("send", {'version': 'v3.1'})
+.request({
+  "Messages":[
+    {
+      "From": {
+        "Email": process.env.EMAIL_FROM,
+        "Name": "RBcompanies"
+      },
+      "To": [
+        {
+          "Email": email,
+          "Name": email
+        }
+      ],
+      "Subject": "Account activation link",
+      "TextPart": "Please Click below link to get your account activated",
+      "HTMLPart":  `
+      <p>Please use the following link to activate your acccount:</p>
+      <p>${process.env.CLIENT_URL}/auth/adminaccount/activate/${token}</p>
+      <hr />
+      <p>This email may contain sensetive information</p>
+      <p>https://nextblogg.vercel.app</p>
+  `,
   
-//     }
-//   ]
-// })
+    }
+  ]
+})
 
-//   .then((result) => {
-//                return res.json({
-//                 message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
-//             });
-//   })
-//   .catch((err) => {
-//     console.log(err.statusCode)
-//   })
+  .then((result) => {
+               return res.json({
+                message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
+            });
+  })
+  .catch((err) => {
+    console.log(err.statusCode)
+  })
 
     
 
@@ -399,51 +380,44 @@ exports.forgotPassword = (req, res) => {
                 // });
 
 
-                // mailjet
-                // .post("send", {'version': 'v3.1'})
-                // .request({
-                //   "Messages":[
-                //     {
-                //       "From": {
-                //         "Email": process.env.EMAIL_FROM,
-                //         "Name": "RBcompanies"
-                //       },
-                //       "To": [
-                //         {
-                //           "Email": email,
-                //           "Name": email
-                //         }
-                //       ],
-                //       "Subject": "Password Reset Link",
-                //       "TextPart": "Welcome to Next Blog",
-                //       "HTMLPart": `
-                //       <p>Please use the following link to reset your password:</p>
-                //       <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
-                //       <hr />
-                //       <p>This email may contain sensetive information</p>
-                //       <p>https://nextblogg.vercel.app</p>
-                //   `,
+                mailjet
+                .post("send", {'version': 'v3.1'})
+                .request({
+                  "Messages":[
+                    {
+                      "From": {
+                        "Email": process.env.EMAIL_FROM,
+                        "Name": "RBcompanies"
+                      },
+                      "To": [
+                        {
+                          "Email": email,
+                          "Name": email
+                        }
+                      ],
+                      "Subject": "Password Reset Link",
+                      "TextPart": "Welcome to Next Blog",
+                      "HTMLPart": `
+                      <p>Please use the following link to reset your password:</p>
+                      <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
+                      <hr />
+                      <p>This email may contain sensetive information</p>
+                      <p>https://nextblogg.vercel.app</p>
+                  `,
                   
-                //     }
-                //   ]
-                // })
+                    }
+                  ]
+                })
          
-                //   .then((result) => {
-                //     return res.json({
-                //                 message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
-                //             });
-                //   })
-                //   .catch((err) => {
-                //     console.log(err.statusCode)
-                //   })
-                
-
-                transporter.sendMail(emailData).then(sent=>{
+                  .then((result) => {
                     return res.json({
-                        message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
-                                    });
-                });
-        ;
+                                message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
+                            });
+                  })
+                  .catch((err) => {
+                    console.log(err.statusCode)
+                  })
+                
 
             
 

@@ -51,7 +51,6 @@ exports.read = (req, res) => {
                         error: errorHandler(err)
                     });
                 }
-                // console.log(data)
                 res.json({ category: category, blogs: data });
             });
     });

@@ -1,22 +1,6 @@
 const sgMail = require('@sendgrid/mail'); // SENDGRID_API_KEY
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-const nodemailer = require('nodemailer');
-
-let transporter = nodemailer.createTransport({
-    service: "gmail",
-    //port:'465',
-   
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: "foodhubdeliveries@gmail.com", 
-      pass: "raji8897"
-    }, 
-    tls: {
-        rejectUnauthorized: false
-    }
-  });
-
 exports.contactForm = (req, res) => {
     const { email, name, message } = req.body;
     // console.log(req.body);
@@ -33,21 +17,14 @@ exports.contactForm = (req, res) => {
             <p>Sender message: ${message}</p>
             <hr />
             <p>This email may contain sensetive information</p>
-            <p>https://rbnextblog.xyz</p>
+            <p>https://seoblog.com</p>
         `
     };
 
-    // sgMail.send(emailData).then(sent => {
-    //     return res.json({
-    //         success: true
-    //     });
-    // });
-
-
-    transporter.sendMail(emailData).then(sent=>{
+    sgMail.send(emailData).then(sent => {
         return res.json({
             success: true
-                        });
+        });
     });
 };
 
