@@ -23,7 +23,7 @@ const mailjet = require ('node-mailjet')
 
 
 let transporter = nodemailer.createTransport({
-    host: "smtp-mail.outlook.com",
+    service: process.env.PROVIDER,
     //port:'465',
    
     secure: false, // true for 465, false for other ports

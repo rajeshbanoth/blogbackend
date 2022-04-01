@@ -4,7 +4,7 @@ sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 const nodemailer = require('nodemailer');
 
 let transporter = nodemailer.createTransport({
-    host: "smtp-mail.outlook.com",
+    service: process.env.PROVIDER,
     //port:'465',
    
     secure: false, // true for 465, false for other ports
