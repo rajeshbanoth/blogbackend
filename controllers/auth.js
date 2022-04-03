@@ -56,13 +56,13 @@ exports.preSignup = (req, res) => {
             <p>${process.env.CLIENT_URL}/auth/account/activate/${token}</p>
             <hr />
             <p>This email may contain sensetive information</p>
-            <p>https://nextblogg.vercel.app</p>
+            <p>https://gloom.co.in</p>
         `
         };
 
         transporter.sendMail(emailData).then(sent=>{
             return res.json({
-                                message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
+                                message: `Email has been sent to ${email}. Follow the instructions to activate your account.If not found, please check your spam folder`
                             });
         });
 
@@ -135,13 +135,13 @@ exports.preSignupAdmin = (req, res) => {
             <p>${process.env.CLIENT_URL}/auth/adminaccount/activate/${token}</p>
             <hr />
             <p>This email may contain sensetive information</p>
-            <p>https://nextblogg.vercel.app</p>
+            <p>https://gloom.co.in</p>
         `
         };
 
         transporter.sendMail(emailData).then(sent=>{
             return res.json({
-                                message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
+                                message: `Email has been sent to ${email}. Follow the instructions to activate your account.If not found, please check your spam folder`
                             });
         });
 ;
@@ -376,9 +376,10 @@ exports.forgotPassword = (req, res) => {
             html: `
             <p>Please use the following link to reset your password:</p>
             <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
+        
             <hr />
             <p>This email may contain sensetive information</p>
-            <p>https://nextblogg.vercel.app</p>
+            <p>https://gloom.co.in</p>
         `
         };
         // populating the db > user > resetPasswordLink
@@ -438,7 +439,7 @@ exports.forgotPassword = (req, res) => {
 
                 transporter.sendMail(emailData).then(sent=>{
                     return res.json({
-                        message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
+                        message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min. If not found, please check your spam folder`
                                     });
                 });
         ;
