@@ -439,7 +439,7 @@ exports.forgotPassword = (req, res) => {
 
                 transporter.sendMail(emailData).then(sent=>{
                     return res.json({
-                        message: `Email has been sent to ${email}.\n*Follow the instructions to reset your password.\n*Link expires in 10min.\n*If not found, please check your spam folder`
+                        message: `<p>Email has been sent to ${email}.\n*Follow the instructions to reset your password.\n*Link expires in 10min.\n*If not found, please check your spam folder<p>`
                                     });
                 });
         ;
