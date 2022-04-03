@@ -22,8 +22,8 @@ exports.contactForm = (req, res) => {
     // console.log(req.body);
 
     const emailData = {
-        to: process.env.EMAIL_TO,
-        from: email,
+        to:   email ,
+        from: process.env.HOTMAIL_USER,
         subject: `Contact form - ${process.env.APP_NAME}`,
         text: `Email received from contact from \n Sender name: ${name} \n Sender email: ${email} \n Sender message: ${message}`,
         html: `
@@ -33,7 +33,7 @@ exports.contactForm = (req, res) => {
             <p>Sender message: ${message}</p>
             <hr />
             <p>This email may contain sensetive information</p>
-            <p>https://rbnextblog.xyz</p>
+            <p>https://gloom.co.in</p>
         `
     };
 

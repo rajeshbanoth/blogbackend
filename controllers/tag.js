@@ -2,6 +2,7 @@ const Tag = require('../models/tag');
 const Blog = require('../models/blog');
 const slugify = require('slugify');
 const { errorHandler } = require('../helpers/dbErrorHandler');
+// const { AutosubmitUrlBing } = require('./autosubmiturl');
 
 exports.create = (req, res) => {
     const { name } = req.body;
@@ -16,6 +17,7 @@ exports.create = (req, res) => {
                 error: errorHandler(err)
             });
         }
+        // AutosubmitUrlBing()
         res.json(data); // dont do this res.json({ tag: data });
     });
 };
