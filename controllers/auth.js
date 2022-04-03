@@ -141,7 +141,7 @@ exports.preSignupAdmin = (req, res) => {
 
         transporter.sendMail(emailData).then(sent=>{
             return res.json({
-                                message: `Email has been sent to ${email}.<br/>Follow the instructions to activate your account.If not found, please check your spam folder`
+                                message: `Email has been sent to ${email}.<br/>*Follow the instructions to activate your account.<br/>*If not found, please check your spam folder`
                             });
         });
 ;
