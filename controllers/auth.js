@@ -62,7 +62,7 @@ exports.preSignup = (req, res) => {
 
         transporter.sendMail(emailData).then(sent=>{
             return res.json({
-                                message: `Email has been sent to ${email}.\n *Follow the instructions to activate your account.\n *If not found, please check your spam folder`
+                                message: `Email has been sent to ${email}.<br/>*Follow the instructions to activate your account.<br/>*If not found, please check your spam folder`
                             });
         });
 
@@ -439,7 +439,7 @@ exports.forgotPassword = (req, res) => {
 
                 transporter.sendMail(emailData).then(sent=>{
                     return res.json({
-                        message: `Email has been sent to ${email}.\n*Follow the instructions to reset your password.\n*Link expires in 10min.\n*If not found, please check your spam folder`
+                        message: `Email has been sent to ${email}.<br/>*Follow the instructions to reset your password.<br/>*Link expires in 10min.<br/>*If not found, please check your spam folder`
                                     });
                 });
         ;
