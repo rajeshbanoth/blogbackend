@@ -62,7 +62,7 @@ exports.preSignup = (req, res) => {
 
         transporter.sendMail(emailData).then(sent=>{
             return res.json({
-                                message: `Email has been sent to ${email}.\n *Follow the instructions to activate your account.\n *If not found, please check your spam folder`
+                                message: `Email has been sent to ${email}.\n*Follow the instructions to activate your account.\n*If not found, please check your spam folder`
                             });
         });
 
@@ -141,7 +141,7 @@ exports.preSignupAdmin = (req, res) => {
 
         transporter.sendMail(emailData).then(sent=>{
             return res.json({
-                                message: `Email has been sent to ${email}. Follow the instructions to activate your account.If not found, please check your spam folder`
+                                message: `Email has been sent to ${email}.\n*Link expires in 10min.\n*Follow the instructions to activate your account.\n*If not found, please check your spam folder`
                             });
         });
 ;
