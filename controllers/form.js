@@ -69,13 +69,16 @@ exports.contactBlogAuthorForm = (req, res) => {
             <p>Message: ${message}</p>
             <hr />
             <p>This email may contain sensetive information</p>
-            <p>https://seoblog.com</p>
+            <p>https://gloom.co.in</p>
         `
     };
 
-    sgMail.send(emailData).then(sent => {
+
+
+
+    transporter.sendMail(emailData).then(sent=>{
         return res.json({
             success: true
-        });
+                        });
     });
 };
