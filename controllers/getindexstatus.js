@@ -10,7 +10,7 @@ const jwtClient = new google.auth.JWT(
   null
 );
 
-exports.getstatus=(url)=>{
+exports.getstatus=(url,res)=>{
 
   jwtClient.authorize(function(err, tokens) {
     if (err) {
@@ -31,7 +31,7 @@ exports.getstatus=(url)=>{
       // Handle the response
       console.log(body);
 
-    res.send(body)
+    //res.send(body)
 
     });
   });

@@ -15,10 +15,12 @@ const userRoutes = require('./routes/user');
 const categoryRoutes = require('./routes/category');
 const tagRoutes = require('./routes/tag');
 const formRoutes = require('./routes/form');
-const {autosubmiturl}= require('./controllers/autosubmiturl')
+//const {autosubmiturl}= require('./controllers/autosubmiturl')
+
+const {autosubmiturl}= require('./controllers/indexing')
 
 
-const {getstatus} = require('./controllers/getstatus')
+const {getstatus} = require('./controllers/getindexstatus')
 
 // The Cloud Functions for Firebase SDK to create Cloud Functions and set up triggers.
 const functions = require('firebase-functions');
@@ -62,35 +64,54 @@ app.use('/api', formRoutes);
       res.send("Server is running")
   })
 
-  app.get('/addindex',(req,res)=>{
-      const data= req.body.data
+function replace (url){
+
+    url.slice(1, -1)
+
+    console.log(url,"a")
+
+    return url
+
+
+}
+
+
+  app.post('/addindex',(req,res)=>{
+
+    console.log(req.body)
+      const data= req.body
 
       const url= data.url
       const type= data.type
 
       console.log(url,type)
 
-      autosubmiturl(url,type)
+     autosubmiturl(url,type,res)
   })
 
-  app.get('/deleteindex',(req,res)=>{
-    const data= req.body.data
+  app.post('/deleteindex',(req,res)=>{
+    const data= req.body
 
     const url= data.url
     const type= data.type
 
-    autosubmiturl(url,type)
+    console.log(url)
 
-    console.log(url,type)
+  
+    autosubmiturl(url,type,res)
 })
 
-app.get('/viewindex',(req,res)=>{
-    const data= req.body.data
+app.post('/viewindex',(req,res)=>{
+    const data= req.body
 
-    const url= data.url
-    const type= data.type
+    const  url= data.url
+    console.log(url,"as")
+     
 
-    console.log(url,type)
+
+
+    
+getstatus(url,res)
 
 })
 
