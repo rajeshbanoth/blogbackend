@@ -15,6 +15,10 @@ const userRoutes = require('./routes/user');
 const categoryRoutes = require('./routes/category');
 const tagRoutes = require('./routes/tag');
 const formRoutes = require('./routes/form');
+const {autosubmiturl}= require('./controllers/autosubmiturl')
+
+
+const {getstatus} = require('./controllers/getstatus')
 
 // The Cloud Functions for Firebase SDK to create Cloud Functions and set up triggers.
 const functions = require('firebase-functions');
@@ -53,9 +57,42 @@ app.use('/api', categoryRoutes);
 app.use('/api', tagRoutes);
 app.use('/api', formRoutes);
 
+
   app.get('/',(req,res)=>{
       res.send("Server is running")
   })
+
+  app.get('/addindex',(req,res)=>{
+      const data= req.body.data
+
+      const url= data.url
+      const type= data.type
+
+      console.log(url,type)
+
+      autosubmiturl(url,type)
+  })
+
+  app.get('/deleteindex',(req,res)=>{
+    const data= req.body.data
+
+    const url= data.url
+    const type= data.type
+
+    autosubmiturl(url,type)
+
+    console.log(url,type)
+})
+
+app.get('/viewindex',(req,res)=>{
+    const data= req.body.data
+
+    const url= data.url
+    const type= data.type
+
+    console.log(url,type)
+
+})
 
 // port
 const port = process.env.PORT || 8000;

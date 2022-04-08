@@ -2,6 +2,7 @@ const Category = require('../models/category');
 const Blog = require('../models/blog');
 const slugify = require('slugify');
 const { errorHandler } = require('../helpers/dbErrorHandler');
+const { autosubmiturl } = require('./autosubmiturl');
 
 exports.create = (req, res) => {
     const { name } = req.body;
@@ -15,6 +16,11 @@ exports.create = (req, res) => {
                 error: errorHandler(err)
             });
         }
+
+        const url=process.env.CLIENT_URL+`/categories/${slug}`
+        const type='URL_UPDATED'
+
+        autosubmiturl(url,type)
         res.json(data);
     });
 };
@@ -66,6 +72,9 @@ exports.remove = (req, res) => {
                 error: errorHandler(err)
             });
         }
+        const url=process.env.CLIENT_URL+`/categories/${slug}`
+        const type='URL_DELETED'
+        autosubmiturl(url,type)
         res.json({
             message: 'Category deleted successfully'
         });

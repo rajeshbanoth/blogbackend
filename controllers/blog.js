@@ -9,6 +9,8 @@ const _ = require('lodash');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 const fs = require('fs');
 const { smartTrim } = require('../helpers/blog');
+const {autosubmiturl}  = require('./autosubmiturl')
+
 
 exports.create = (req, res) => {
     let form = new formidable.IncomingForm();
@@ -48,10 +50,12 @@ exports.create = (req, res) => {
             });
         }
 
+        const urlid=slugify(title).toLowerCase();
+
         let blog = new Blog();
         blog.title = title;
         blog.body = body;
-        blog.excerpt = smartTrim(body, 320, ' ', ' ...');
+        blog.excerpt = smartTrim(body, 280, ' ', ' ...');
         blog.slug = slugify(title).toLowerCase();
         blog.mtitle = `${title} | ${process.env.APP_NAME}`;
         blog.mdesc = stripHtml(body.substring(0, 160));
@@ -76,7 +80,7 @@ exports.create = (req, res) => {
                     error: errorHandler(err)
                 });
             }
-            // res.json(result);
+           
             Blog.findByIdAndUpdate(result._id, { $push: { categories: arrayOfCategories } }, { new: true }).exec(
                 (err, result) => {
                     if (err) {
@@ -98,6 +102,16 @@ exports.create = (req, res) => {
                     }
                 }
             );
+  
+
+            const url=process.env.CLIENT_URL+`/blogs/${urlid}`
+            const type='URL_UPDATED'
+
+            autosubmiturl(url,type)
+
+
+
+
         });
     });
 };
@@ -192,6 +206,12 @@ exports.remove = (req, res) => {
                 error: errorHandler(err)
             });
         }
+
+        const url=process.env.CLIENT_URL+`/blogs/${slug}`
+       const type='URL_DELETED'
+
+       autosubmiturl(url,type)
+
         res.json({
             message: 'Blog deleted successfully'
         });
@@ -254,6 +274,12 @@ exports.update = (req, res) => {
                     });
                 }
                 // result.photo = undefined;
+
+                const url=process.env.CLIENT_URL+`/blogs/${slug}`
+                const type='URL_UPDATED'
+         
+                autosubmiturl(url,type)
+
                 res.json(result);
             });
         });
