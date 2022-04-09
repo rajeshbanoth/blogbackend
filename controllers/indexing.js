@@ -32,12 +32,8 @@ exports.autosubmiturl=(url,type,res)=>{
       }
     };
     request(options, function (error, response, body) {
-      // Handle the response
-       console.log(body);
+      res.send(body)
 
-       res.send(body)
-
-     // console.log(response,"res")
     });
   });
 

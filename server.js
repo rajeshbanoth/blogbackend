@@ -61,19 +61,9 @@ app.use('/api', formRoutes);
 
 
   app.get('/',(req,res)=>{
-      res.send("Server is running")
+      res.send("Server is running");
   })
 
-function replace (url){
-
-    url.slice(1, -1)
-
-    console.log(url,"a")
-
-    return url
-
-
-}
 
 
   app.post('/addindex',(req,res)=>{

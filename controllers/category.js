@@ -20,6 +20,9 @@ exports.create = (req, res) => {
         const url=process.env.CLIENT_URL+`/categories/${slug}`
         const type='URL_UPDATED'
 
+        const url1=process.env.CLIENT_URL+`/search?${slug}`        
+        autosubmiturl(url1,type)
+
         autosubmiturl(url,type)
         res.json(data);
     });
@@ -74,6 +77,12 @@ exports.remove = (req, res) => {
         }
         const url=process.env.CLIENT_URL+`/categories/${slug}`
         const type='URL_DELETED'
+
+        const url1=process.env.CLIENT_URL+`/search?${slug}`
+
+
+         
+        autosubmiturl(url1,type)
         autosubmiturl(url,type)
         res.json({
             message: 'Category deleted successfully'

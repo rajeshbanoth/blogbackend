@@ -29,9 +29,9 @@ exports.getstatus=(url,res)=>{
     };
     request(options, function (error, response, body) {
       // Handle the response
-      console.log(body);
+  
 
-    //res.send(body)
+  res.send(body)
 
     });
   });
