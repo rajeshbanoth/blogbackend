@@ -3,9 +3,9 @@ var { google } = require("googleapis");
 
 
 const jwtClient = new google.auth.JWT(
-  process.env.CLIENT_EMAIL,
+  process.env.CLIENT_EMAIL.replace(/\\n/g, '\n'),
   null,
-  process.env.PRIVATE_KEY,
+  process.env.PRIVATE_KEY.replace(/\\n/g, '\n'),
   ["https://www.googleapis.com/auth/indexing"],
   null
 );
