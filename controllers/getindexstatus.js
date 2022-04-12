@@ -1,6 +1,6 @@
 var request = require("request");
 var { google } = require("googleapis");
-var key = require("./service_account.json");
+
 
 const jwtClient = new google.auth.JWT(
   process.env.CLIENT_EMAIL,
