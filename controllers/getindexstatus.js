@@ -3,9 +3,9 @@ var { google } = require("googleapis");
 var key = require("./service_account.json");
 
 const jwtClient = new google.auth.JWT(
-  key.client_email,
+  process.env.CLIENT_EMAIL,
   null,
-  key.private_key,
+  process.env.PRIVATE_KEY,
   ["https://www.googleapis.com/auth/indexing"],
   null
 );
