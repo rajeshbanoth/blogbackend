@@ -13,6 +13,8 @@ const {autosubmiturl}  = require('./autosubmiturl');
 const { type } = require('os');
 
 
+
+
 exports.create = (req, res) => {
     let form = new formidable.IncomingForm();
     form.keepExtensions = true;
@@ -22,10 +24,19 @@ exports.create = (req, res) => {
                 error: 'Image could not upload'
             });
         }
-
-        const { title, body, categories, tags } = fields;
+        
+        const { title, body, categories, tags,html } = fields;
 
         console.log(body)
+       const substr=body.substring(2,6)    
+       let smarttrimdata
+       let mdesc
+
+        if(substr==="time")
+        {
+        smarttrimdata=  smartTrim(html, 280, ' ', ' ...');
+        mdesc =stripHtml(html.substring(0, 160));
+        }
 
         if (!title || !title.length) {
             return res.status(400).json({
@@ -51,15 +62,24 @@ exports.create = (req, res) => {
             });
         }
 
-        const urlid=slugify(title).toLowerCase();
 
+        const urlid=slugify(title).toLowerCase();
         let blog = new Blog();
         blog.title = title;
         blog.body = body;
-        blog.excerpt = smartTrim(body, 280, ' ', ' ...');
+
+        if(substr==="time")
+        {
+            blog.excerpt=smarttrimdata;
+            blog.mdesc=mdesc
+        }
+        else{
+            blog.excerpt = smartTrim(body, 280, ' ', ' ...');
+            blog.mdesc = stripHtml(body.substring(0, 160));
+        }
+        
         blog.slug = slugify(title).toLowerCase();
         blog.mtitle = `${title} | ${process.env.APP_NAME}`;
-        blog.mdesc = stripHtml(body.substring(0, 160));
         blog.postedBy = req.user._id;
         // categories and tags
         let arrayOfCategories = categories && categories.split(',');
@@ -247,12 +267,38 @@ exports.update = (req, res) => {
             oldBlog = _.merge(oldBlog, fields);
             oldBlog.slug = slugBeforeMerge;
 
-            const { body, desc, categories, tags } = fields;
+            const { body, desc, categories, tags,html } = fields;
 
-            if (body) {
-                oldBlog.excerpt = smartTrim(body, 320, ' ', ' ...');
-                oldBlog.desc = stripHtml(body.substring(0, 160));
-            }
+
+            const substr=body.substring(2,6)    
+            let smarttrimdata
+            let mdesc
+     
+             if(substr==="time")
+             {
+             smarttrimdata=  smartTrim(html, 280, ' ', ' ...');
+             mdesc =stripHtml(html.substring(0, 160));
+             }
+
+             
+             
+             if(substr==="time")
+             {
+                if (body) {
+                    oldBlog.excerpt = smarttrimdata;
+                    oldBlog.desc = mdesc;
+                }
+             }
+             else{
+  
+                if (body) {
+                    oldBlog.excerpt = smartTrim(body, 320, ' ', ' ...');
+                    oldBlog.desc = stripHtml(body.substring(0, 160));
+                }
+             }
+             
+
+
 
             if (categories) {
                 oldBlog.categories = categories.split(',');

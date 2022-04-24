@@ -10,9 +10,10 @@ const { runValidation } = require('../validators');
 const { createTagValidator } = require('../validators/tag');
 
 // only difference is methods not name 'get' | 'post' | 'delete'
-router.post('/tag', createTagValidator, runValidation, requireSignin, adminMiddleware, create);
+// router.post('/tag', createTagValidator, runValidation, requireSignin, adminMiddleware, create);
 router.get('/tags', list);
 router.get('/tag/:slug', read);
 router.delete('/tag/:slug', requireSignin, adminMiddleware, remove);
+router.post('/tag', createTagValidator, runValidation, requireSignin, create);
 
 module.exports = router; 
