@@ -22,7 +22,7 @@ exports.contactForm = (req, res) => {
     // console.log(req.body);
 
     const emailData = {
-        to:   email ,
+        to: process.env.HOTMAIL_USER ,
         from: process.env.HOTMAIL_USER,
         subject: `Contact form - ${process.env.APP_NAME}`,
         text: `Email received from contact from \n Sender name: ${name} \n Sender email: ${email} \n Sender message: ${message}`,
