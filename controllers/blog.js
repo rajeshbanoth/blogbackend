@@ -127,7 +127,7 @@ exports.create = (req, res) => {
 
             const url=process.env.CLIENT_URL+`/blogs/${urlid}`
             const url1=process.env.CLIENT_URL+`/search?${urlid}`
-            
+            const type='URL_UPDATED'
 
             autosubmiturl(url,type)
             autosubmiturl(url1,type)
