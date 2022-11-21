@@ -11,17 +11,6 @@ const { OAuth2Client } = require('google-auth-library');
 const mailjet = require ('node-mailjet')
     .connect(process.env.MJ_APIKEY_PUBLIC, process.env.MJ_APIKEY_PRIVATE)
     
-
-
-// sendgrid
-// const sgMail = require('@sendgrid/mail'); // SENDGRID_API_KEY
-// sgMail.setApiKey("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");
-
-
-
-
-
-
 let transporter = nodemailer.createTransport({
     service: process.env.PROVIDER,
     //port:'465',
@@ -66,51 +55,6 @@ exports.preSignup = (req, res) => {
                             });
         });
 
-        // sgMail.send(emailData).then(sent => {
-        //     return res.json({
-        //         message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
-        //     });
-        // });
-
-
-        // mailjet
-        // .post("send", {'version': 'v3.1'})
-        // .request({
-        //   "Messages":[
-        //     {
-        //       "From": {
-        //         "Email": process.env.EMAIL_FROM,
-        //         "Name": "RBcompanies"
-        //       },
-        //       "To": [
-        //         {
-        //           "Email": email,
-        //           "Name": email
-        //         }
-        //       ],
-        //       "Subject": "Account activation link",
-        //       "TextPart": "Please Click below link to get your account activated",
-        //       "HTMLPart":  `
-        //       <p>Please use the following link to activate your acccount:</p>
-        //       <p>${process.env.CLIENT_URL}/auth/account/activate/${token}</p>
-        //       <hr />
-        //       <p>This email may contain sensetive information</p>
-        //       <p>https://nextblogg.vercel.app</p>
-        //   `,
-          
-        //     }
-        //   ]
-        // })
-        //   .then((result) => {
-
-        //     console.log(result)
-        //                return res.json({
-        //                 message: `Email has been sent to ${email}. Follow the instructions to activate your account.`
-        //             });
-        //   })
-        //   .catch((err) => {
-        //     console.log(err.statusCode)
-        //   })
 
 
     });
@@ -305,6 +249,8 @@ exports.requireSignin = expressJwt({
     secret: process.env.JWT_SECRET // req.user
 });
 
+
+
 exports.authMiddleware = (req, res, next) => {
     const authUserId = req.user._id;
     User.findById({ _id: authUserId }).exec((err, user) => {
@@ -358,7 +304,6 @@ exports.canUpdateDeleteBlog = (req, res, next) => {
 
 exports.forgotPassword = (req, res) => {
     const { email } = req.body;
-
     User.findOne({ email }, (err, user) => {
         if (err || !user) {
             return res.status(401).json({
@@ -387,57 +332,7 @@ exports.forgotPassword = (req, res) => {
             if (err) {
                 return res.json({ error: errorHandler(err) });
             } else {
-
-
-
-
-                // sgMail.send(emailData).then(sent => {
-                //     return res.json({
-                //         message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
-                //     });
-                // });
-
-
-                // mailjet
-                // .post("send", {'version': 'v3.1'})
-                // .request({
-                //   "Messages":[
-                //     {
-                //       "From": {
-                //         "Email": process.env.EMAIL_FROM,
-                //         "Name": "RBcompanies"
-                //       },
-                //       "To": [
-                //         {
-                //           "Email": email,
-                //           "Name": email
-                //         }
-                //       ],
-                //       "Subject": "Password Reset Link",
-                //       "TextPart": "Welcome to Next Blog",
-                //       "HTMLPart": `
-                //       <p>Please use the following link to reset your password:</p>
-                //       <p>${process.env.CLIENT_URL}/auth/password/reset/${token}</p>
-                //       <hr />
-                //       <p>This email may contain sensetive information</p>
-                //       <p>https://nextblogg.vercel.app</p>
-                //   `,
-                  
-                //     }
-                //   ]
-                // })
-         
-                //   .then((result) => {
-                //     return res.json({
-                //                 message: `Email has been sent to ${email}. Follow the instructions to reset your password. Link expires in 10min.`
-                //             });
-                //   })
-                //   .catch((err) => {
-                //     console.log(err.statusCode)
-                //   })
-                
-
-                transporter.sendMail(emailData).then(sent=>{
+              transporter.sendMail(emailData).then(sent=>{
                     return res.json({
                         message: `Email has been sent to ${email}.<br/>*Follow the instructions to reset your password.<br/>*Link expires in 10min.<br/>*If not found, please check your spam folder`
                                     });

@@ -15,11 +15,7 @@ const userRoutes = require('./routes/user');
 const categoryRoutes = require('./routes/category');
 const tagRoutes = require('./routes/tag');
 const formRoutes = require('./routes/form');
-//const {autosubmiturl}= require('./controllers/autosubmiturl')
-
-const {autosubmiturl}= require('./controllers/indexing')
-
-
+const {manualsubmiturl} = require('./controllers/GoogleIndexing')
 const {getstatus} = require('./controllers/getindexstatus')
 
 // The Cloud Functions for Firebase SDK to create Cloud Functions and set up triggers.
@@ -66,42 +62,28 @@ app.use('/api', formRoutes);
 
 
 
-  app.post('/addindex',(req,res)=>{
 
+  //for   google manual indexing
+
+  app.post('/addindex',(req,res)=>{
     console.log(req.body)
       const data= req.body
-
       const url= data.url
       const type= data.type
-
-      console.log(url,type)
-
-     autosubmiturl(url,type,res)
+     manualsubmiturl(url,type,res)
   })
 
   app.post('/deleteindex',(req,res)=>{
     const data= req.body
-
     const url= data.url
-    const type= data.type
-
-    console.log(url)
-
-  
-    autosubmiturl(url,type,res)
+    const type= data.type  
+    manualsubmiturl(url,type,res)
 })
 
 app.post('/viewindex',(req,res)=>{
     const data= req.body
-
     const  url= data.url
-    console.log(url,"as")
-     
-
-
-
-    
-getstatus(url,res)
+    getstatus(url,res)
 
 })
 

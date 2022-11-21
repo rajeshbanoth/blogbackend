@@ -2,7 +2,7 @@ const Category = require('../models/category');
 const Blog = require('../models/blog');
 const slugify = require('slugify');
 const { errorHandler } = require('../helpers/dbErrorHandler');
-const { autosubmiturl } = require('./autosubmiturl');
+const { autosubmiturl } = require('./GoogleIndexing');
 
 exports.create = (req, res) => {
     const { name } = req.body;
@@ -17,13 +17,16 @@ exports.create = (req, res) => {
             });
         }
 
-        const url=process.env.CLIENT_URL+`/categories/${slug}`
-        const type='URL_UPDATED'
+        if(process.env.GOOGLE_INDEXING_ENABLE)
+        {
+            const url=process.env.CLIENT_URL+`/categories/${slug}`
+            const type='URL_UPDATED'   
+            const url1=process.env.CLIENT_URL+`/search?${slug}`        
+            autosubmiturl(url1,type)    
+            autosubmiturl(url,type)
+        }
 
-        const url1=process.env.CLIENT_URL+`/search?${slug}`        
-        autosubmiturl(url1,type)
 
-        autosubmiturl(url,type)
         res.json(data);
     });
 };
@@ -105,15 +108,17 @@ exports.remove = (req, res) => {
                 error: errorHandler(err)
             });
         }
-        const url=process.env.CLIENT_URL+`/categories/${slug}`
-        const type='URL_DELETED'
 
-        const url1=process.env.CLIENT_URL+`/search?${slug}`
+        if(process.env.GOOGLE_INDEXING_ENABLE)
+        {
+            const url=process.env.CLIENT_URL+`/categories/${slug}`
+            const type='URL_DELETED'   
+            const url1=process.env.CLIENT_URL+`/search?${slug}`           
+            autosubmiturl(url1,type)
+            autosubmiturl(url,type)
 
-
-         
-        autosubmiturl(url1,type)
-        autosubmiturl(url,type)
+        }
+      
         res.json({
             message: 'Category deleted successfully'
         });

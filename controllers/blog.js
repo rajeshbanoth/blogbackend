@@ -9,11 +9,8 @@ const _ = require('lodash');
 const { errorHandler } = require('../helpers/dbErrorHandler');
 const fs = require('fs');
 const { smartTrim } = require('../helpers/blog');
-const {autosubmiturl}  = require('./autosubmiturl');
+const {autosubmiturl}  = require('./GoogleIndexing');
 const { type } = require('os');
-
-
-
 
 exports.create = (req, res) => {
     let form = new formidable.IncomingForm();
@@ -125,12 +122,16 @@ exports.create = (req, res) => {
             );
   
 
-            const url=process.env.CLIENT_URL+`/blogs/${urlid}`
-            const url1=process.env.CLIENT_URL+`/search?${urlid}`
-            const type='URL_UPDATED'
-
-            autosubmiturl(url,type)
-            autosubmiturl(url1,type)
+            if(process.env.GOOGLE_INDEXING_ENABLE)
+            {
+                const url=process.env.CLIENT_URL+`/blogs/${urlid}`
+                const url1=process.env.CLIENT_URL+`/search?${urlid}`
+                const type='URL_UPDATED'
+    
+                autosubmiturl(url,type)
+                autosubmiturl(url1,type)
+            }
+            
         });
     });
 };
@@ -226,16 +227,17 @@ exports.remove = (req, res) => {
             });
         }
 
-        const url=process.env.CLIENT_URL+`/blogs/${slug}`
-       const type='URL_DELETED'
+        if(process.env.GOOGLE_INDEXING_ENABLE)
+        {
+            const url=process.env.CLIENT_URL+`/blogs/${slug}`
+            const type='URL_DELETED'    
+            const url1=process.env.CLIENT_URL+`/search?${slug}`                   
+            autosubmiturl(url1,type)     
+            autosubmiturl(url,type)
 
-       const url1=process.env.CLIENT_URL+`/search?${slug}`
+        }
 
-
-         
-       autosubmiturl(url1,type)
-
-       autosubmiturl(url,type)
+       
 
         res.json({
             message: 'Blog deleted successfully'
@@ -326,15 +328,16 @@ exports.update = (req, res) => {
                 }
                 // result.photo = undefined;
 
-                const url=process.env.CLIENT_URL+`/blogs/${slug}`
-                const type='URL_UPDATED'
 
-                const url1=process.env.CLIENT_URL+`/search?${slug}`
-
-
-         
-                autosubmiturl(url,type)
-                autosubmiturl(url1,type)
+                if(process.env.GOOGLE_INDEXING_ENABLE)
+                {
+                    const url=process.env.CLIENT_URL+`/blogs/${slug}`
+                    const type='URL_UPDATED'   
+                    const url1=process.env.CLIENT_URL+`/search?${slug}`           
+                    autosubmiturl(url,type)
+                    autosubmiturl(url1,type)
+                }
+               
                 res.json(result);
 
             });

@@ -2,7 +2,7 @@ const Tag = require('../models/tag');
 const Blog = require('../models/blog');
 const slugify = require('slugify');
 const { errorHandler } = require('../helpers/dbErrorHandler');
-const { autosubmiturl } = require('./autosubmiturl');
+const { autosubmiturl } = require('./GoogleIndexing');
 // const { AutosubmitUrlBing } = require('./autosubmiturl');
 
 exports.create = (req, res) => {
@@ -19,13 +19,17 @@ exports.create = (req, res) => {
             });
         }
 
-        const url=process.env.CLIENT_URL+`/tags/${slug}`
-        const type='URL_UPDATED'
+        if(process.env.GOOGLE_INDEXING_ENABLE)
+        {
+          
+            const url=process.env.CLIENT_URL+`/tags/${slug}`
+            const type='URL_UPDATED'   
+            const url1=process.env.CLIENT_URL+`/search?${slug}`        
+            autosubmiturl(url1,type)    
+            autosubmiturl(url,type)
+        }
 
-        const url1=process.env.CLIENT_URL+`/search?${slug}`        
-        autosubmiturl(url1,type)
 
-        autosubmiturl(url,type)
 
         // AutosubmitUrlBing()
         res.json(data); // dont do this res.json({ tag: data });
@@ -79,13 +83,15 @@ exports.remove = (req, res) => {
             });
         }
 
-        const url=process.env.CLIENT_URL+`/tags/${slug}`
-        const type='URL_DELETED'
-
-        const url1=process.env.CLIENT_URL+`/search?${slug}`        
-        autosubmiturl(url1,type)
-
-        autosubmiturl(url,type)
+        if(process.env.GOOGLE_INDEXING_ENABLE)
+        {
+            const url=process.env.CLIENT_URL+`/tags/${slug}`
+            const type='URL_DELETED'   
+            const url1=process.env.CLIENT_URL+`/search?${slug}`        
+            autosubmiturl(url1,type)    
+            autosubmiturl(url,type)
+        }
+       
         res.json({
             message: 'Tag deleted successfully'
         });
